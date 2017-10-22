@@ -20,11 +20,6 @@ class App extends Component {
       console.log('Disconnected from server');
     });
 
-    socket.emit('createMessage', {
-      from: 'Michal',
-      text: 'No siema'
-    })
-
     socket.on('newMessage', (message) =>{
       console.log('New message', message)
     });
