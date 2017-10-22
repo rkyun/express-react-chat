@@ -1,4 +1,4 @@
-#Chat application build with node, express, socket.io and react
+# Chat application build with node, express, socket.io and react
 
 Server is  built with Andrew Mead's tutorial.
 
