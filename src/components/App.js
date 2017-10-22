@@ -39,12 +39,18 @@ class App extends Component {
   render() {
 
     return (
-      <div className="App">
-        <p className="App-intro">
-          Chat app
-        </p>
-        <MessageList messages={this.props.messages} />
-        <MessageForm createMessage={this.props.createMessage} socket={this.props.io} />
+      <div className="App chat">
+        <div className="chat__sidebar">
+          <h3>People</h3>
+          <div id="users"></div>
+        
+        </div>
+        <div className="chat__main">
+            <MessageList messages={this.props.messages} />
+          <div className="chat__footer">
+            <MessageForm createMessage={this.props.createMessage} socket={this.props.io} />
+          </div>
+        </div>
         
     </div>
     );
