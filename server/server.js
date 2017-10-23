@@ -8,6 +8,10 @@ const socketIO = require('socket.io');
 
 const clientPath = path.join(__dirname, '..', 'build');
 
+const cors = require('cors')
+
+const moment = require('moment');
+
 
 const app = express();
 
@@ -22,13 +26,13 @@ io.on('connection', (socket) => {
   socket.emit('newMessage', {
       from: 'Admin',
       text: 'Welcome to the chat!',
-      createdAt: new Date().getTime()
+      createdAt: moment().valueOf()
     });
 
     socket.broadcast.emit('newMessage', {
       from: 'Admin',
       text: 'New user joined!',
-      createdAt: new Date().getTime()
+      createdAt: moment().valueOf()
     });
 
   socket.on('disconnect', ()=>{

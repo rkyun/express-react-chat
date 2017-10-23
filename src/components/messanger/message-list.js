@@ -8,11 +8,11 @@ const MessageList = props =>{
     return _.map(messages, message => {
       return (
         <li key={message.createdAt} className="message">
-          <div class="message__title">
+          <div className="message__title">
             <h4>{message.from}</h4>
-              <span>{message.createdAt}</span>
+              <span>{message.createdAtFormmated}</span>
           </div>
-          <div class="message__body">
+          <div className="message__body">
               <p>{message.text}</p>
           </div>
           

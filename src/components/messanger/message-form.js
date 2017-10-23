@@ -1,6 +1,9 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form'
 
+import moment from 'moment';
+
+
 
 const messageForm = (props) => {
 
@@ -9,7 +12,7 @@ const messageForm = (props) => {
     createMessage(socket, {
       from: 'michal',
       text,
-      createdAt: new Date().getTime()
+      createdAt: moment().valueOf()
     });
     reset();
   }
