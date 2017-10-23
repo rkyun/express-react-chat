@@ -19,7 +19,7 @@ export function createMessage(io, data){
 }
 
 export function appendMessage(data){
-  data.createdAtFormmated = moment(data.createdAt).format('HH:mm');
+  data.createdAtFormatted = moment(data.createdAt).format('HH:mm');
   return {
     type: APPEND_MESSAGE,
     payload: data
