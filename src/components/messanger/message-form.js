@@ -24,7 +24,7 @@ const messageForm = (props) => {
       name="text"
       component="input"
       type="text"
-      autocomplete="off"
+      autoComplete="off"
       />
       <button type="submit" >Send</button>
     </form>

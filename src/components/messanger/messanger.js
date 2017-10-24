@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../../actions';
 
-import MessageForm from './messanger/message-form';
-import MessageList from './messanger/message-list';
+import MessageForm from './message-form';
+import MessageList from './message-list';
 
-import './App.css';
+import './messanger.css';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:1337');
+const socket = io.connect('http://192.168.1.6:1337');
 
-class App extends Component {
+class Messanger extends Component {
 
   constructor(props) {
     super(props);
@@ -22,14 +22,6 @@ class App extends Component {
     socket.on('disconnect', ()=>{
       console.log('Disconnected from server');
     });
-
-    socket.emit('createMessage', {
-      from: 'Michal',
-      text: 'No siema',
-      createdAt: new Date().getTime()
-    }, (data)=>{
-      console.log('Got it', data);
-    })
 
     socket.on('newMessage', (message) =>{
       this.props.appendMessage(message);
@@ -60,4 +52,4 @@ class App extends Component {
 function mapStatetoProps(state){
   return {io: state.app.socket, messages: state.app.messages}
 }
-export default connect(mapStatetoProps, actions)(App);
+export default connect(mapStatetoProps, actions)(Messanger);
