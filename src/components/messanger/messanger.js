@@ -8,15 +8,22 @@ import MessageList from './message-list';
 import './messanger.css';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://192.168.1.6:1337');
+
 
 class Messanger extends Component {
 
-  constructor(props) {
-    super(props);
-    props.setSocket(socket);
+  componentWillMount(){
+    const socket = io.connect('http://192.168.1.6:1337');
+    this.props.connect(socket);
+    const params = {name: this.props.user, room: this.props.room}
+    console.log(params, 'das');
     socket.on('connect', ()=>{
       console.log('Connected to server');
+
+      socket.emit('join', params);
+
+      
+
     });
 
     socket.on('disconnect', ()=>{
@@ -26,6 +33,11 @@ class Messanger extends Component {
     socket.on('newMessage', (message) =>{
       this.props.appendMessage(message);
     });
+  }
+
+  componentWillUnmount() {
+    this.props.io.disconnect();
+    this.props.disconnect();
   }
 
   render() {
@@ -50,6 +62,6 @@ class Messanger extends Component {
 }
 
 function mapStatetoProps(state){
-  return {io: state.app.socket, messages: state.app.messages}
+  return {io: state.app.socket, messages: state.app.messages, user: state.app.user, room: state.app.room}
 }
 export default connect(mapStatetoProps, actions)(Messanger);

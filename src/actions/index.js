@@ -1,11 +1,17 @@
-import {SET_SOCKET, SEND_MESSAGE, APPEND_MESSAGE} from './types';
+import {CONNECT,DISCONNECT, SEND_MESSAGE, APPEND_MESSAGE, JOIN_ROOM} from './types';
 
 import moment from 'moment';
 
-export function setSocket(io){
+export function connect(io){
   return {
-    type: SET_SOCKET,
+    type: CONNECT,
     payload: io
+  }
+}
+
+export function disconnect(){
+  return {
+    type: DISCONNECT
   }
 }
 
@@ -22,6 +28,15 @@ export function appendMessage(data){
   data.createdAtFormatted = moment(data.createdAt).format('HH:mm');
   return {
     type: APPEND_MESSAGE,
+    payload: data
+  }
+}
+
+export function joinRoom(data){
+
+  console.log(data);
+  return{
+    type: JOIN_ROOM,
     payload: data
   }
 }

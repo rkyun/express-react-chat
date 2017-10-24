@@ -29,10 +29,22 @@ io.on('connection', (socket) => {
       createdAt: moment().valueOf()
     });
 
-    socket.broadcast.emit('newMessage', {
-      from: 'Admin',
-      text: 'New user joined!',
-      createdAt: moment().valueOf()
+    // socket.broadcast.emit('newMessage', {
+    //   from: 'Admin',
+    //   text: 'New user joined!',
+    //   createdAt: moment().valueOf()
+    // });
+
+    socket.on('join', (params) =>{
+      socket.join(params.room);
+
+      console.log(params);
+
+      socket.broadcast.to(params.room).emit('newMessage', {
+        from: 'Admin',
+        text: `${params.name} joined!`,
+        createdAt: moment().valueOf()
+      })
     });
 
   socket.on('disconnect', ()=>{
