@@ -13,7 +13,7 @@ import io from 'socket.io-client';
 class Messanger extends Component {
 
   componentWillMount(){
-    const socket = io.connect('http://192.168.1.6:1337');
+    const socket = io.connect('http://192.168.1.5:1337');
     this.props.connect(socket);
     const params = {name: this.props.user, room: this.props.room}
     console.log(params, 'das');
@@ -29,6 +29,10 @@ class Messanger extends Component {
     socket.on('disconnect', ()=>{
       console.log('Disconnected from server');
     });
+
+    socket.on('updateUserList', (users)=> {
+      console.log(`Users list ${users}`);
+    })
 
     socket.on('newMessage', (message) =>{
       this.props.appendMessage(message);

@@ -4,7 +4,7 @@ export default function(state = {socket: null, messages: {}, user: '', room: ''}
     case CONNECT:
       return { ...state, socket: action.payload }
     case DISCONNECT:
-      return { ...state, socket: null }
+      return { ...state, socket: null, messages: {} }
     case APPEND_MESSAGE:
       return { ...state, messages:{...state.messages, [action.payload.createdAt]:action.payload}};
     case JOIN_ROOM:

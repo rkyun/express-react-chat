@@ -1,25 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form'
 
 import moment from 'moment';
 
+import { connect } from 'react-redux';
 
 
-const messageForm = (props) => {
 
-  function handleFormSubmit({text}){
-    const { createMessage, reset, socket} = props;
+class MessageForm extends Component {
+
+  handleFormSubmit({text}){
+    const { createMessage, reset, socket, user} = this.props;
     createMessage(socket, {
-      from: 'michal',
+      from: user,
       text,
       createdAt: moment().valueOf()
     });
     reset();
   }
-  const { handleSubmit } = props;
+
+  render(){
+  const { handleSubmit } = this.props;
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)}>
+    <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
       <Field 
       name="text"
       component="input"
@@ -29,9 +33,13 @@ const messageForm = (props) => {
       <button type="submit" >Send</button>
     </form>
   );
+  }
 }
 
+function mapStateToProps(state){
+  return { user: state.app.user }
+}
 
 export default reduxForm({
   form: 'message'
-})(messageForm);
+})(connect(mapStateToProps)(MessageForm));

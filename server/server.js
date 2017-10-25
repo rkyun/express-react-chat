@@ -12,12 +12,16 @@ const cors = require('cors')
 
 const moment = require('moment');
 
+const { Users } = require ('./users');
+
 
 const app = express();
 
 const server = http.createServer(app);
 
 const io = socketIO(server);
+
+const users = new Users();
 
 
 io.on('connection', (socket) => {
@@ -36,10 +40,16 @@ io.on('connection', (socket) => {
     // });
 
     socket.on('join', (params) =>{
+      
       socket.join(params.room);
 
-      console.log(params);
+      users.removeUser(socket.id);
+      users.addUser(socket.id, params.name, params.room);
 
+
+
+
+      io.to(params.room).emit('updateUserList', users.getUserList(params.room));
       socket.broadcast.to(params.room).emit('newMessage', {
         from: 'Admin',
         text: `${params.name} joined!`,
@@ -49,15 +59,31 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', ()=>{
     console.log('User disconnected');
+    var user = users.removeUser(socket.id);
+
+    if (user) {
+      io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+      io.to(user.room).emit('newMessage', {
+        from: 'Admin',
+        text: `${user.name} has left!`,
+        createdAt: moment().valueOf()
+      });
+    }
   });
 
   socket.on('createMessage', (message, callback) => {
-    console.log('message', message);
-    io.emit('newMessage', {
-      from: message.from,
+    
+    const user = users.getUser(socket.id);
+
+    if(user){
+      io.to(user.room).emit('newMessage', {
+      from: user.name,
       text: message.text,
       createdAt: new Date().getTime()
     });
+    }
+
+    
 
     callback('This is from the server');
     // socket.broadcast.emit('newMessage', {
