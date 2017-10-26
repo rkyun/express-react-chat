@@ -4,6 +4,7 @@ import * as actions from '../../actions';
 
 import MessageForm from './message-form';
 import MessageList from './message-list';
+import UserList from './user-list';
 
 import './messanger.css';
 import io from 'socket.io-client';
@@ -49,17 +50,7 @@ class Messanger extends Component {
     this.props.updateUsers([]);
   }
 
-  renderUsers() {
-    return (
-      <ol>
-        {this.props.users.map(user =>{
-          return (
-            <li key={user}>{user}</li>
-          )
-        })}
-      </ol>
-    )
-  }
+  
 
   render() {
 
@@ -68,7 +59,9 @@ class Messanger extends Component {
         <div className="chat__sidebar">
           <h3>People</h3>
           <div id="users">
-            {this.renderUsers()}
+            <ul>
+              <UserList users={this.props.users} />
+            </ul>
           </div>
         
         </div>
