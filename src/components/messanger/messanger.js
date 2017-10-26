@@ -16,11 +16,13 @@ class Messanger extends Component {
     const socket = io.connect('http://192.168.1.5:1337');
     this.props.connect(socket);
     const params = {name: this.props.user, room: this.props.room}
-    console.log(params, 'das');
+
     socket.on('connect', ()=>{
       console.log('Connected to server');
 
       socket.emit('join', params);
+
+      
 
       
 
@@ -31,7 +33,9 @@ class Messanger extends Component {
     });
 
     socket.on('updateUserList', (users)=> {
-      console.log(`Users list ${users}`);
+      // console.log(`Users list ${users}`);
+      this.props.updateUsers(users);
+      console.log(this.props.users);
     })
 
     socket.on('newMessage', (message) =>{
@@ -42,6 +46,19 @@ class Messanger extends Component {
   componentWillUnmount() {
     this.props.io.disconnect();
     this.props.disconnect();
+    this.props.updateUsers([]);
+  }
+
+  renderUsers() {
+    return (
+      <ol>
+        {this.props.users.map(user =>{
+          return (
+            <li key={user}>{user}</li>
+          )
+        })}
+      </ol>
+    )
   }
 
   render() {
@@ -50,7 +67,9 @@ class Messanger extends Component {
       <div className="App chat">
         <div className="chat__sidebar">
           <h3>People</h3>
-          <div id="users"></div>
+          <div id="users">
+            {this.renderUsers()}
+          </div>
         
         </div>
         <div className="chat__main">
@@ -66,6 +85,11 @@ class Messanger extends Component {
 }
 
 function mapStatetoProps(state){
-  return {io: state.app.socket, messages: state.app.messages, user: state.app.user, room: state.app.room}
+  return {
+    io: state.app.socket,
+    messages: state.app.messages,
+    user: state.app.user,
+    room: state.app.room,
+    users: state.users}
 }
 export default connect(mapStatetoProps, actions)(Messanger);

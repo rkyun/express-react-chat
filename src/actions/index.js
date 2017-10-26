@@ -1,4 +1,11 @@
-import {CONNECT,DISCONNECT, SEND_MESSAGE, APPEND_MESSAGE, JOIN_ROOM} from './types';
+import {
+  CONNECT,
+  DISCONNECT,
+  SEND_MESSAGE,
+  APPEND_MESSAGE,
+  JOIN_ROOM,
+  UPDATE_USERS
+} from './types';
 
 import moment from 'moment';
 
@@ -38,5 +45,12 @@ export function joinRoom(data){
   return{
     type: JOIN_ROOM,
     payload: data
+  }
+}
+
+export function updateUsers(users){
+  return {
+    type: UPDATE_USERS,
+    payload: users
   }
 }
